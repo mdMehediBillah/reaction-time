@@ -55,11 +55,14 @@ export default {
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
-
-  &:hover {
-    background-color: rgb(4, 83, 125);
-    scale: 1.1;
-    transition: all 0.3s ease;
-  }
+}
+.btnStart:disabled {
+  background-color: rgb(200, 200, 200);
+  cursor: not-allowed;
+}
+.btnStart:hover {
+  background-color: rgb(4, 125, 77);
+  scale: 1.1;
+  transition: all 0.3s ease;
 }
 </style>
