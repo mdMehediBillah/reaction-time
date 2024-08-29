@@ -1,70 +1,68 @@
+<template>
+  <div>
+    <h1>Reaction Time Calculation</h1>
+    <button class="btnStart" @click="startGame" :disabled="isPlaying">
+      Start Game
+    </button>
+    <Block v-if="isPlaying" :delay="delay" @end="endGame" />
+    <Results v-if="showResults" :score="score" @restart="handleRestart" />
+    <!-- <p v-if="showResults">Reaction Time: {{ score }}ms</p> -->
+  </div>
+</template>
+
+<!-- script -->
 <script>
-import Modal from "./components/Modal.vue";
-import { ref } from "vue";
-// Reactive reference ref Composition API
-// const msg = ref("Hello Vite");
+import Block from "./components/Block.vue";
+import Results from "./components/Results.vue";
 export default {
   name: "App",
-  components: {
-    Modal,
-  },
+  components: { Block, Results },
   data() {
     return {
-      title: "Hello Vite",
-      // header: "This is a header from data",
-      // text: "Grab the content from data",
-      // theme: "light",
-      showModal: false,
-      showModal2: false,
+      isPlaying: false,
+      delay: null,
+      score: null,
+      showResults: false,
     };
   },
   methods: {
-    toggleModal() {
-      this.showModal = !this.showModal;
+    startGame() {
+      this.showResults = false;
+      this.delay = Math.floor(Math.random() * 5000) + 2000;
+      this.isPlaying = true;
+      // console.log(this.delay);
     },
-    toggleModal2() {
-      this.showModal2 = !this.showModal2;
+    endGame(reactionTime) {
+      this.score = reactionTime;
+      this.isPlaying = false;
+      this.showResults = true;
+      console.log(reactionTime);
+    },
+    handleRestart() {
+      this.showResults = false;
+      this.score = 0; // Reset the score or handle other restart logic
     },
   },
 };
 </script>
 
-<template>
-  <div>
-    <h1>{{ title }}</h1>
-    <div v-if="showModal">
-      <!-- slot -->
-      <Modal theme="sale" @close="toggleModal">
-        <h1>Mehedi using slot</h1>
-        <p>Content for madal</p>
-        <template v-slot:link>
-          <a href="https://www.google.com">Google</a>
-        </template>
-      </Modal>
-      <!-- <Modal :header="header" :text="text" theme="sale" @close="toggleModal" /> -->
-    </div>
-    <div v-if="showModal2">
-      <!-- slot -->
-      <Modal theme="salee" @close="toggleModal2">
-        <h1 class="headerTitle">Second Modal using click evet</h1>
-        <p>Content for madal</p>
-        <template v-slot:link>
-          <a href="https://www.google.com">Google</a>
-        </template>
-      </Modal>
-      <!-- <Modal :header="header" :text="text" theme="sale" @close="toggleModal" /> -->
-    </div>
-    <button @click.alt="toggleModal">Toggle Modal(alt+click)</button>
-    <button @click="toggleModal2">Second Modal</button>
-  </div>
-</template>
-
 <style scoped>
-h1 {
-  color: rgb(27, 134, 95);
-  font-size: 2rem;
+.btnStart {
+  padding: 0.5rem 1rem;
+  font-size: 1.2rem;
+  background-color: rgb(4, 125, 97);
+  color: rgb(254, 255, 213);
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
 }
-p {
-  color: rgb(51, 51, 51);
+.btnStart:disabled {
+  background-color: rgb(200, 200, 200);
+  cursor: not-allowed;
+}
+.btnStart:hover {
+  background-color: rgb(4, 125, 77);
+  scale: 1.1;
+  transition: all 0.3s ease;
 }
 </style>
